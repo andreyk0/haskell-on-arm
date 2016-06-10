@@ -27,7 +27,9 @@ RUN    apt-get update -y \
 
 
 # LLVM version that GHC likes
-ADD clang+llvm-3.5.2-armv7a-linux-gnueabihf.tar.xz /usr/local
+COPY clang+llvm-3.5.2-armv7a-linux-gnueabihf.tar.xz /usr/local
+RUN tar xvf /usr/local/clang+llvm-3.5.2-armv7a-linux-gnueabihf.tar.xz -C /usr/local --strip-components 1
+RUN rm /usr/local/*.tar.*
 
 
 # this is necessary for tools to find LLVM under standard locations

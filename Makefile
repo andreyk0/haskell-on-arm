@@ -31,7 +31,7 @@ publish-haskell-platform-armhf-debian-jessie:
 
 # Download version known to work with GHC
 docker/haskell-platform-armhf-debian-jessie/$(LLVM_TXZ):
-	wget -o $@ http://llvm.org/releases/$(LLVM_VERSION)/$(LLVM_TXZ)
+	wget -O $@ http://llvm.org/releases/$(LLVM_VERSION)/$(LLVM_TXZ)
 
 
 # Creates a base OS docker image from the SD card images.
