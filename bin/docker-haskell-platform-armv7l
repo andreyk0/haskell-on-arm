@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# Sets up environment to run ARM versions of GHC/stack
+# toolchain via docker/QEMU.
+#
+# You need qemu-arm-static and binfmt support installed.
+#
+# $LOCAL directory gets mounted as a docker volume and
+# will accumulate binary packages produced by stack as
+# well as let you download and install GHC ARM versions
+# (which are not auto-managed by stack on this platform).
+#
+
+IMG=$1
+shift
+
+case $IMG in
+  jessie)
+    CPU=cortex-a15
+    LOCAL=$HOME/.armv7l/debian-jessie-cortex-a15
+    ;;
+
+  stretch)
+    CPU=cortex-a8
+    LOCAL=$HOME/.armv7l/debian-stretch-cortex-a8
+    ;;
+
+  *)
+    echo "Usage: $0 jessie|stretch";
+    exit 1;
+    ;;
+esac
+
+exec docker run \
+  -it --rm -u 1000:1000 \
+  -v /home:/home \
+  -v $LOCAL/local:$HOME/.local \
+  -v $LOCAL/cabal:$HOME/.cabal \
+  -v $LOCAL/stack:$HOME/.stack \
+  -v /tmp:/tmp \
+  -v /usr/bin/qemu-arm-static:/usr/bin/qemu-arm-static \
+  -w `pwd` \
+  -e QEMU_SET_ENV=QEMU_CPU=$CPU \
+  -e HOME=$HOME \
+  -e PATH=$PATH \
+  andreyk0/haskell-platform-armhf-debian-jessie:20160609 "$@"
