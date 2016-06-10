@@ -12,12 +12,13 @@ that adds your user/group. Otherwise you'll run into permission problems with th
 
 ## Pre-requisites
 
+```
 Ubuntu 16.04 LTS. Worked with 14.04 as well but 16.04 runs QEMU better.
 My kernel version at the moment is 4.4.0-22-generic x86_64.
 QEMU at the moment is qemu-user-static 1:2.5+dfsg-5ubuntu10.1.
 Binformat version is binfmt-support: 2.1.6-1.
 Docker version is 1.11.2.
-
+```
 
 ## Running
 
