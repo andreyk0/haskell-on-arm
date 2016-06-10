@@ -66,6 +66,21 @@ drwxr-xr-x 5 andrey andrey 4096 Dec 15 22:44 ghc-7.10.3/
 Notice that 7.10.2 version is hacked to point to 7.10.3. This works in practice and not a terrible idea as each GHC
  release tends to fix at least a few ARM-related bugs.
 
+Run stack:
+
+```
+# docker-haskell-platform-armv7l jessie stack --version
+Version 1.1.0 arm hpack-0.13.0
+```
+
+Run shell:
+
+```
+# docker-haskell-platform-armv7l jessie /bin/bash
+debian@f2e21cb6b981:~/a$ uname -a
+Linux f2e21cb6b981 4.4.0-22-generic #40-Ubuntu SMP Thu May 12 22:03:46 UTC 2016 armv7l GNU/Linux
+debian@f2e21cb6b981:~/a$ 
+```
 
 
 ## Build docker images
