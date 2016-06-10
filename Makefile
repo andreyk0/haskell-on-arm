@@ -1,9 +1,3 @@
-# Ubuntu 16.04 LTS
-# Linux axps 4.4.0-22-generic #40-Ubuntu SMP Thu May 12 22:03:46 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
-# qemu-user-static 1:2.5+dfsg-5ubuntu10.1 amd64 QEMU user mode emulation binaries (static version)
-# docker: 1.11.2
-#
-
 help:
 	@echo
 	@echo "make create-armhf-debian-jessie-image  -- base OS docker image"
