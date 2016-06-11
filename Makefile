@@ -8,9 +8,14 @@ help:
 	@echo
 
 
-# Works well with ghc-7.10.3
-LLVM_VERSION=3.5.2
-LLVM_TXZ=clang+llvm-$(LLVM_VERSION)-armv7a-linux-gnueabihf.tar.xz
+# 3.5.2 works well with ghc-7.10.3
+LLVM35_VERSION=3.5.2
+LLVM35_TXZ=clang+llvm-$(LLVM35_VERSION)-armv7a-linux-gnueabihf.tar.xz
+# 3.7.1 is needed for ghc-8
+LLVM37_VERSION=3.7.1
+LLVM37_TXZ=clang+llvm-$(LLVM37_VERSION)-armv7a-linux-gnueabihf.tar.xz
+
+# Docker image tag, date based
 TAG=$(shell date +%Y%m%d)
 
 
@@ -18,21 +23,26 @@ TAG=$(shell date +%Y%m%d)
 # It's easier to manage them in a local directory and mount as a volume into docker.
 # Builds a flattened image with intermediate layers merged.
 create-haskell-platform-armhf-debian-jessie: \
-	docker/haskell-platform-armhf-debian-jessie/$(LLVM_TXZ)
+	docker/haskell-platform-armhf-debian-jessie/$(LLVM35_TXZ) \
+	docker/haskell-platform-armhf-debian-jessie/$(LLVM37_TXZ)
 
 	cd docker/haskell-platform-armhf-debian-jessie/ && docker build -t haskell-platform-armhf-debian-jessie:latest .
 	ID=`docker run -d haskell-platform-armhf-debian-jessie:latest /bin/bash` ; \
-		 docker export $$ID | docker import - andreyk0/haskell-platform-armhf-debian-jessie:$(TAG) \
-		 docker rm $$ID
+		 docker export $$ID | docker import - andreyk0/haskell-platform-armhf-debian-jessie:$(TAG) ; \
+		 docker rm $$ID ; \
+	   docker rmi haskell-platform-armhf-debian-jessie:latest
 
 # Pushes image to docker registry.
 publish-haskell-platform-armhf-debian-jessie:
 	docker push andreyk0/haskell-platform-armhf-debian-jessie:$(TAG)
 
-# Download version known to work with GHC
-docker/haskell-platform-armhf-debian-jessie/$(LLVM_TXZ):
-	wget -O $@ http://llvm.org/releases/$(LLVM_VERSION)/$(LLVM_TXZ)
+# Download version known to work with GHC 7.10.x
+docker/haskell-platform-armhf-debian-jessie/$(LLVM35_TXZ):
+	wget -O $@ http://llvm.org/releases/$(LLVM35_VERSION)/$(LLVM35_TXZ)
 
+# Download version known to work with GHC 8.0
+docker/haskell-platform-armhf-debian-jessie/$(LLVM37_TXZ):
+	wget -O $@ http://llvm.org/releases/$(LLVM37_VERSION)/$(LLVM37_TXZ)
 
 # Creates a base OS docker image from the SD card images.
 create-armhf-debian-jessie-image: \

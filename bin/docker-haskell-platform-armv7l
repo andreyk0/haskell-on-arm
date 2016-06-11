@@ -43,4 +43,4 @@ exec docker run \
   -e QEMU_SET_ENV=QEMU_CPU=$CPU \
   -e HOME=$HOME \
   -e PATH=$PATH \
-  andreyk0/haskell-platform-armhf-debian-jessie:20160609 "$@"
+  andreyk0/haskell-platform-armhf-debian-jessie:20160611 "$@"

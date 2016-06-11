@@ -66,6 +66,75 @@ drwxr-xr-x 5 andrey andrey 4096 Dec 15 22:44 ghc-7.10.3/
 Notice that 7.10.2 version is hacked to point to 7.10.3. This works in practice and not a terrible idea as each GHC
  release tends to fix at least a few ARM-related bugs.
 
+
+Here's how to do it initialize, step by step (using ghc8 as an example, steps are the same for 7.10 branch) using paths from the [platform script](bin/docker-haskell-platform-armv7l):
+
+
+Set up directories mounted to platform docker container as volumes:
+
+```
+# mkdir -pv ~/.armv7l/debian-jessie-cortex-a15/local/bin
+# mkdir -pv ~/.armv7l/debian-jessie-cortex-a15/cabal
+# mkdir -pv ~/.armv7l/debian-jessie-cortex-a15/stack
+```
+
+Download ARM stack binary:
+
+```
+# cd ~/.armv7l/debian-jessie-cortex-a15/local/bin
+# wget -O stack.gz https://gist.github.com/andreyk0/07273aa2cedbaa2f469468005438e92b/raw/755a21c5d2169037a6a80504bbcd57d9bdad6666/stack.gz
+# gunzip stack.gz
+# chmod 755 stack
+```
+
+Launch platform image (those local, cabal and stack directories are mounted as ~/.local, ~/.cabal and ~/.stack now):
+
+```
+# bin/docker-haskell-platform-armv7l jessie /bin/bash
+# export PATH=$HOME/.local/bin:$PATH
+# which stack
+/home/andrey/.local/bin/stack
+#
+# stack setup
+```
+
+Stack setup will run for a while but complain that it doesn't know how to install GHC:
+
+```
+I don't know how to install GHC for (Linux,Arm), please install manually
+```
+
+Download GHC (outside of the docker container to make it run faster):
+
+```
+# cd .armv7l/debian-jessie-cortex-a15/stack/programs/arm-linux
+# wget http://downloads.haskell.org/~ghc/8.0.1/ghc-8.0.1-armv7-deb8-linux.tar.xz
+# tar xf ghc-8.0.1-armv7-deb8-linux.tar.xz
+```
+
+Install GHC (continuing inside the docker container):
+
+```
+# cd ~/.stack/programs/arm-linux
+# mv ghc-8.0.1 ghc-8.0.1-dist # tar.xz uses same dir name as the target
+# rm ghc-8.0.1-armv7-deb8-linux.tar.xz
+# cd ghc-8.0.1-dist
+# ./configure --prefix ~/.stack/programs/arm-linux/ghc-8.0.1
+# make install
+# cd ~/.stack/programs/arm-linux
+# rm -rf ghc-8.0.1-dist
+#
+# touch ghc-8.0.1.installed
+#
+```
+
+Follow the same steps to install 7.10.3 branch and you'll have a working environment capable of building [stackage](https://www.stackage.org/) packages for ARM.
+In practice the binaries produced with this environment are fairly portable because most of the stuff is linked in statically and debian itself targets many systems.
+
+
+
+## Using
+
 Run stack:
 
 ```
@@ -79,7 +148,7 @@ Run shell:
 # docker-haskell-platform-armv7l jessie /bin/bash
 debian@f2e21cb6b981:~/a$ uname -a
 Linux f2e21cb6b981 4.4.0-22-generic #40-Ubuntu SMP Thu May 12 22:03:46 UTC 2016 armv7l GNU/Linux
-debian@f2e21cb6b981:~/a$ 
+debian@f2e21cb6b981:~/a$
 ```
 
 
