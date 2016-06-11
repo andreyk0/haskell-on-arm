@@ -28,7 +28,8 @@ RUN    apt-get update -y \
 
 # LLVM version that GHC 7.10 likes
 COPY clang+llvm-3.5.2-armv7a-linux-gnueabihf.tar.xz /usr/local/llvm-3.5.tar.xz
-RUN tar xvf /usr/local/llvm-3.5.tar.xz -C /usr/local --strip-components 1
+RUN mkdir /usr/local/llvm-3.5
+RUN tar xvf /usr/local/llvm-3.5.tar.xz -C /usr/local/llvm-3.5 --strip-components 1
 # this is necessary for tools to find LLVM under standard locations
 RUN ln -s /usr/local/llvm-3.5/bin/opt /usr/bin/opt-3.5 \
  && ln -s /usr/local/llvm-3.5/bin/llc /usr/bin/llc-3.5 \
@@ -37,7 +38,8 @@ RUN ln -s /usr/local/llvm-3.5/bin/opt /usr/bin/opt-3.5 \
 
 # LLVM version that GHC 8.0 likes
 COPY clang+llvm-3.7.1-armv7a-linux-gnueabihf.tar.xz /usr/local/llvm-3.7.tar.xz
-RUN tar xvf /usr/local/llvm-3.7.tar.xz -C /usr/local --strip-components 1
+RUN mkdir /usr/local/llvm-3.7
+RUN tar xvf /usr/local/llvm-3.7.tar.xz -C /usr/local/llvm-3.7 --strip-components 1
 # this is necessary for tools to find LLVM under standard locations
 RUN ln -s /usr/local/llvm-3.7/bin/opt /usr/bin/opt-3.7 \
  && ln -s /usr/local/llvm-3.7/bin/llc /usr/bin/llc-3.7 \
