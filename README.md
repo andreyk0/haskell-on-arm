@@ -107,7 +107,7 @@ I don't know how to install GHC for (Linux,Arm), please install manually
 Download GHC (outside of the docker container to make it run faster):
 
 ```
-# cd .armv7l/debian-jessie-cortex-a15/stack/programs/arm-linux
+# cd ~/.armv7l/debian-jessie-cortex-a15/stack/programs/arm-linux
 # wget http://downloads.haskell.org/~ghc/8.0.1/ghc-8.0.1-armv7-deb8-linux.tar.xz
 # tar xf ghc-8.0.1-armv7-deb8-linux.tar.xz
 ```
