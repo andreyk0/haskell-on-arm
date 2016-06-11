@@ -67,7 +67,7 @@ Notice that 7.10.2 version is hacked to point to 7.10.3. This works in practice 
  release tends to fix at least a few ARM-related bugs.
 
 
-Here's how to do it initialize, step by step (using ghc8 as an example, steps are the same for 7.10 branch) using paths from the [platform script](bin/docker-haskell-platform-armv7l):
+Here's how to initialize, step by step (using ghc8 as an example, steps are the same for 7.10 branch) using paths from the [platform script](bin/docker-haskell-platform-armv7l):
 
 
 Set up directories mounted to platform docker container as volumes:
