@@ -49,10 +49,7 @@ Adjust to your liking. In my case ARM version of stack binaries looks like
         └── snapshots
 
 ```
-
-If you trust a binary produced by some random dude (which you really shouldn't) -
- grab a [stack binary](https://gist.github.com/andreyk0/07273aa2cedbaa2f469468005438e92b) and download an
-official [GHC](https://www.haskell.org/ghc/download).
+Grab a [stack binary](https://github.com/commercialhaskell/stack/releases/) and download an official [GHC](https://www.haskell.org/ghc/download).
 At the moment stack doesn't manage GHC binaries on ARM, so, you'll need to install them following stack's convention under (in my case):
 ```
 ~/.armv7l/debian-jessie-cortex-a15/stack/programs/arm-linux# ll
@@ -82,9 +79,11 @@ Download ARM stack binary:
 
 ```
 # cd ~/.armv7l/debian-jessie-cortex-a15/local/bin
-# wget -O stack.gz https://gist.github.com/andreyk0/07273aa2cedbaa2f469468005438e92b/raw/755a21c5d2169037a6a80504bbcd57d9bdad6666/stack.gz
-# gunzip stack.gz
+# wget -O stack.gz https://github.com/commercialhaskell/stack/releases/download/v1.1.2/stack-1.1.2-linux-arm.tar.gz
+# tar xvf stack.gz
+# mv stack-1.1.2-linux-arm/stack .
 # chmod 755 stack
+# rm -rf stack-1.1.2-linux-arm stack.gz
 ```
 
 Launch platform image (those local, cabal and stack directories are mounted as ~/.local, ~/.cabal and ~/.stack now):
